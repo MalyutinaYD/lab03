@@ -5,32 +5,17 @@
 #include <math.h>
 #include <vector>
 #include <string>
+#include "histogram.h"
+
 using namespace std;
-vector<double>
-input_numbers(size_t count) {
+vector<double> input_numbers(size_t count) {
     vector<double> result(count);
     for (size_t i = 0; i < count; i++) {
         cin >> result[i];
     }
     return result;
 }
-void
-find_minmax(const vector<double>& numbers, double& min, double& max) {
-    min = numbers[0];
-    max = numbers[0];
-    for (double number : numbers)
-    {
-        if (min > number)
-        {
-            min = number;
-        }
-        if (max < number)
-        {
-            max = number;
-        }
-    }
 
-}
 vector <size_t> make_histogram(vector <double> numbers, double min, double max, size_t bin_count, size_t number_count)
 {
     double bin_size = (max - min) / bin_count;
