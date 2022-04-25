@@ -47,12 +47,13 @@ void
 test_interval_vne_diapasona() {
     int interval = -3;
     input_intervals();
+    assert(interval == -3);
 
 }
  void test_interval_vne_diapasona2() {
-    int interval = -11;
+    int interval = 11;
     input_intervals();
-
+    assert(interval == 11);
 }
 
 int
