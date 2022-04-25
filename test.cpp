@@ -42,6 +42,19 @@ test_empty() {
     assert(min == 0);
     assert(max == 0);
 }
+void
+
+test_interval_vne_diapasona() {
+    int interval = -3;
+    input_intervals();
+
+}
+ void test_interval_vne_diapasona2() {
+    int interval = -11;
+    input_intervals();
+
+}
+
 int
 main() {
     test_positive();
@@ -49,4 +62,7 @@ main() {
     test_same();
     test_onenumber();
     test_empty();
+    test_interval_vne_diapasona();
+    test_interval_vne_diapasona2();
+    
 }

@@ -57,14 +57,7 @@ int main()
     size_t bin_count;
     cerr << " enter bin count: ";
     cin >> bin_count;
-    size_t interval;
-    cerr << " enter interval - ";
-    cin >> interval;
-    if ((interval < 4) || (interval > 9))
-    {
-        cout << "ERROR";
-        exit(0);
-    }
+    input_intervals();
     //расчет гистограммы
 
     double min, max;
