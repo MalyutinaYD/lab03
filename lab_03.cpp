@@ -17,6 +17,8 @@ vector<double> input_numbers(size_t count) {
     return result;
 }
 
+
+
 vector <size_t> make_histogram(vector <double> numbers, double min, double max, size_t bin_count, size_t number_count)
 {
     double bin_size = (max - min) / bin_count;
@@ -57,18 +59,23 @@ int main()
     size_t bin_count;
     cerr << " enter bin count: ";
     cin >> bin_count;
-    input_intervals();
+    size_t interval;
+    cerr << "enter size of interval - ";
+    cin >> interval;
+   
+    proverka_intervals(interval);
     //расчет гистограммы
 
     double min, max;
     find_minmax(numbers, min, max);
 
-    const auto bins = make_histogram(numbers, min, max, bin_count, number_count);
+     const auto bins = make_histogram(numbers, min, max, bin_count, number_count);
     //вывод данных
     
-    show_histogram_svg(bins);
     
+    show_histogram_svg(bins, interval);
     
+    razmer_intervalov(bins, interval);
 
 
 
