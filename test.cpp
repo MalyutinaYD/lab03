@@ -45,15 +45,13 @@ test_empty() {
 void
 
 test_interval_vne_diapasona() {
-    int interval = -3;
-    input_intervals();
-    assert(interval == -3);
+    int interval = vvod_interval(-3);
+    assert(interval >= 2);
 
 }
  void test_interval_vne_diapasona2() {
-    int interval = 11;
-    input_intervals();
-    assert(interval == 11);
+    int interval = vvod_interval(11);
+    assert(interval <= 9);
 }
 
 int
