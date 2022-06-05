@@ -7,8 +7,6 @@
 #include <string>
 #include "histogram.h"
 #include "svg.h"
-#include <sstream>
-#include <string>
 
 using namespace std;
  
@@ -34,10 +32,6 @@ read_input(istream& in, bool prompt) {
         cerr << "Enter bin count: ";
         size_t bin_count;
         in >> bin_count;
-
-        size_t interval;
-        cerr << "enter size of interval - ";
-        in >> interval;
     }
     else
     {
@@ -46,66 +40,44 @@ read_input(istream& in, bool prompt) {
         data.numbers = input_numbers(in, number_count);
         size_t bin_count;
         in >> bin_count;
-        size_t interval;
-        in >> interval;
     }
 
 
     return data;
 }
-size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx) {
-    size_t data_size = item_size * item_count;
-    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
-    buffer->write(reinterpret_cast<const char*>(items), data_size);
-    return data_size;
-}
 
-Input
-download(const string& address, int argc, char* argv[]) {
-    stringstream buffer;
+
+int main(int argc, char* argv[])
+{
     if (argc > 1)
     {
         CURL* curl = curl_easy_init();
         if (curl) {
             CURLcode res;
             curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
             res = curl_easy_perform(curl);
-           
-
+            curl_easy_cleanup(curl);
+            
             if (res != CURLE_OK)
             {
-                cerr << curl_easy_strerror(res);
+                fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
                 exit(1);
             }
         }
-        
+        return 0;
     }
     curl_global_init(CURL_GLOBAL_ALL);
-
-    return read_input(buffer, false);
-}
-
-
-int main(int argc, char* argv[])
-{
-    const char* name = "Commander Shepard";
-    int year = 2154;
-    printf("%s was born in %d.\n", name, year);
-    printf("n = %08x\n", 0x1234567);
-    return 0;
-    Input input;
-    if (argc > 1) {
-        input = download(argv[1], argc, argv);
-    }
-    else {
-        input = read_input(cin, true);
-    }
     //ввод данных
     
+    
+    const auto input = read_input(cin, true);
+    
+    
+    size_t interval;
+    cerr << "enter size of interval - ";
+    cin >> interval;
    
-   
-    if (proverka_intervals(input.interval) == false)
+    if (proverka_intervals(interval) == false)
     {
         cerr << "ERROR";
         return 1;
@@ -118,7 +90,7 @@ int main(int argc, char* argv[])
     //вывод данных
     
     
-    show_histogram_svg(bins, input.interval);
+    show_histogram_svg(bins, interval);
     
    
 
