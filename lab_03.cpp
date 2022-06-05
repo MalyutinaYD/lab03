@@ -7,9 +7,10 @@
 #include <string>
 #include "histogram.h"
 #include "svg.h"
+#include <windows.h>
 
 using namespace std;
- 
+DWORD WINAPI GetVersion(void);
 vector<double> input_numbers(istream& in, size_t count) {
     vector<double> result(count);
     for (size_t i = 0; i < count; i++) {
@@ -49,6 +50,12 @@ read_input(istream& in, bool prompt) {
 
 int main(int argc, char* argv[])
 {
+    const char* name = "Commander Shepard";
+    int year = 2154;
+    printf("%s was born in %d.\n", name, year);
+    printf("n = %08x\n", 0x1234567); // 01234567
+    return 0;
+
     if (argc > 1)
     {
         CURL* curl = curl_easy_init();
