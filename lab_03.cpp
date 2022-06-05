@@ -51,26 +51,22 @@ int main(int argc, char* argv[])
 {
     if (argc > 1)
     {
-        cerr << argc;
-        for (int i = 0; i < argc; i++)
-        {
-            cerr << "argv[" << i << "]= " << argv[i];
+        CURL* curl = curl_easy_init();
+        if (curl) {
+            CURLcode res;
+            curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
+            res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
         }
         return 0;
     }
     curl_global_init(CURL_GLOBAL_ALL);
     //ввод данных
-    size_t number_count;
-    cerr << " enter number count: ";
-    cin >> number_count;
     
-
-    cerr << " enter numbers: ";
+    
     const auto input = read_input(cin, true);
-   
-    size_t bin_count;
-    cerr << " enter bin count: ";
-    cin >> bin_count;
+    
+    
     size_t interval;
     cerr << "enter size of interval - ";
     cin >> interval;
@@ -84,7 +80,7 @@ int main(int argc, char* argv[])
     double min, max;
     find_minmax(input.numbers, min, max);
 
-     const auto bins = make_histogram(input.numbers, min, max, input.bin_count, number_count);
+     const auto bins = make_histogram(input.numbers, min, max, input.bin_count, input.number_count);
     //вывод данных
     
     
