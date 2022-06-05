@@ -54,8 +54,29 @@ int main(int argc, char* argv[])
     int year = 2154;
     printf("%s was born in %d.\n", name, year);
     printf("n = %08x\n", 0x1234567); // 01234567
-    return 0;
 
+    const auto R = GetVersion();
+    printf("n = %10x\n", R);
+    printf("n = %16x\n", R);
+    
+    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    DWORD version = R & mask;
+    printf("ver = %lu\n", version);
+    DWORD mask2 = 0b00000000'11111111;
+    DWORD version_major = version & mask2;
+    printf("version_major = %lu\n", version_major);
+    DWORD version_minor = version >> 8;
+    printf("version_minor = %lu\n", version_minor);
+    DWORD build;
+    DWORD platform = R >> 16;
+    printf("ver2 = %lu\n", platform);
+    if ((R & 0x80000000) == 0)
+    {
+        build = platform;
+        printf("build = %lu\n", build);
+
+    }
+    cerr << "Windows" << " " << "v" << " " << version_major << "." << version_minor << " " << "(build" << " " << build << ")" << endl;
     if (argc > 1)
     {
         CURL* curl = curl_easy_init();
