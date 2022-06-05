@@ -1,6 +1,6 @@
 ﻿// lab_03.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
-
+#include <curl/curl.h>
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -49,6 +49,7 @@ read_input(istream& in, bool prompt) {
 
 int main()
 {
+    curl_global_init(CURL_GLOBAL_ALL);
     //ввод данных
     size_t number_count;
     cerr << " enter number count: ";
