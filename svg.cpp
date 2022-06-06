@@ -3,7 +3,40 @@
 #include <math.h>
 #include <vector>
 #include <string>
+#include <sstream>
 #include "histogram.h"
+#include <windows.h>
+DWORD WINAPI GetVersion(void);
+string make_info_text() {
+    DWORD WINAPI GetVersion(void);
+    stringstream buffer;
+    const auto R = GetVersion();
+    printf("n = %lu\n", R);
+    printf("n = %lx\n", R);
+    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    DWORD version = R & mask;
+    printf("ver = %lu\n", version);
+    DWORD platform = R >> 16;
+    printf("ver2 = %lu\n", platform);
+    DWORD mask2 = 0b00000000'11111111;
+    DWORD version_major = version & mask2;
+    printf("version_major = %lu\n", version_major);
+    DWORD version_minor = version >> 8;
+    printf("version_minor = %lu\n", version_minor);
+    DWORD build;
+    if ((R & 0x80000000) == 0)
+    {
+        build = platform;
+        printf("build = %lu\n", build);
+
+    }
+    buffer << "Windows" << " " << "v" << " " << version_major << "." << version_minor << " " << "(build" << " " << build << ")" << endl;
+    TCHAR storage[MAX_COMPUTERNAME_LENGTH + 1];
+    DWORD  bufCharCount = MAX_COMPUTERNAME_LENGTH + 1;
+    GetComputerNameA(LPSTR(storage), &bufCharCount);
+    buffer << "Computer name:" << " " << storage;
+    return buffer.str();
+}
 void show_intervals(size_t interval, vector<size_t> bins)
 {
     size_t max_bin = bins[0];
@@ -115,7 +148,7 @@ show_histogram_svg(const vector<size_t>& bins, size_t interval) {
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
 
-    svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
+    svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT + 30);
     double top = 0;
     double MAX = (IMAGE_WIDTH - TEXT_WIDTH) / BLOCK_WIDTH; //масштабирование
     size_t max_bin = bins[0];
@@ -134,39 +167,20 @@ show_histogram_svg(const vector<size_t>& bins, size_t interval) {
         svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT);
         top += BIN_HEIGHT;
     }
-    
-    
-}
-
-
-
-
-void razmer_intervalov(const vector<size_t>& bins, size_t interval)
-{
-    
-    const auto TEXT_BASELINE = 20;
-    const auto IMAGE_HEIGHT = 300;
-    const auto BIN_HEIGHT = 30;
-    const auto TEXT_WIDTH = 50;
-    const auto TEXT_LEFT = 20;
-    size_t max_bin = bins[0];
-
-    for (size_t bin : bins)
-    {
-        if (bin > max_bin)
-            max_bin = bin;
-    }
+   
     size_t max_interval = interval;
     while (max_interval < max_bin)
     {
         max_interval = max_interval + interval;
     }
-   
+
     size_t amount_intervals = max_interval / interval;
-   
+
     for (size_t i = 0; i < amount_intervals; i++)
     {
-        svg_text(TEXT_WIDTH + TEXT_LEFT + (interval * (i)*BIN_HEIGHT), (IMAGE_HEIGHT - TEXT_BASELINE),  to_string(i));
+        svg_text(TEXT_WIDTH + TEXT_LEFT + (interval * (i)*BLOCK_WIDTH), (IMAGE_HEIGHT - TEXT_BASELINE), to_string(interval * (i)));
     }
+    svg_text(TEXT_LEFT, IMAGE_HEIGHT - TEXT_BASELINE + 30, make_info_text());
     svg_end();
 }
+
